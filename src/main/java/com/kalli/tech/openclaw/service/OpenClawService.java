@@ -1,5 +1,6 @@
 package com.kalli.tech.openclaw.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -7,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 @Service
+
+@Slf4j
 public class OpenClawService {
 
     /**
@@ -21,6 +24,7 @@ public class OpenClawService {
 
         try {
             // Use /bin/bash -c to run Linux shell commands
+            log.info("Executing command: " + command);
             process = new ProcessBuilder("/bin/bash", "-c", command)
                     .redirectErrorStream(true) // merge stdout and stderr
                     .start();
