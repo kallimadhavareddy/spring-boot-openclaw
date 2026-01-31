@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OAuth Test Page</title>
+</head>
+<body>
+    <h1>OAuth2 Test Page</h1>
+    
+    <h2>Test Links:</h2>
+    <p><a href="/oauth2/authorization/google" target="_blank">Direct OAuth Link (opens in new tab)</a></p>
+    <p><a href="/" target="_blank">Home Page (opens in new tab)</a></p>
+    
+    <h2>Debug Info:</h2>
+    <p>Current URL: <span id="currentUrl"></span></p>
+    <p>User Agent: <span id="userAgent"></span></p>
+    
+    <h2>Manual OAuth URL:</h2>
+    <p>Copy this URL and paste in browser:</p>
+    <textarea id="oauthUrl" rows="3" cols="100"></textarea>
+    
+    <script>
+        document.getElementById('currentUrl').textContent = window.location.href;
+        document.getElementById('userAgent').textContent = navigator.userAgent;
+        
+        // Generate OAuth URL manually
+        fetch('/oauth2/authorization/google', {redirect: 'manual'})
+            .then(response => {
+                if (response.status === 302) {
+                    document.getElementById('oauthUrl').value = response.headers.get('Location');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 43709599630-cmujlinl0v0hm3ev6q6pnn4jbm03sft8.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - openid
+              - profile
+              - email
+              - https://www.googleapis.com/auth/calendar.readonly

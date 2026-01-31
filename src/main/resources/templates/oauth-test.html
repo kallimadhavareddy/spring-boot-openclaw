@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>OAuth Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .step { margin: 20px 0; padding: 15px; border: 1px solid #ddd; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 20px; margin: 10px; }
+    </style>
+</head>
+<body>
+    <h1>OAuth2 Test Page</h1>
+    
+    <div class="step">
+        <h2>Step 1: Test OAuth URL Generation</h2>
+        <button onclick="testOAuth()">Generate OAuth URL</button>
+        <div id="oauthResult"></div>
+    </div>
+    
+    <div class="step">
+        <h2>Step 2: Manual OAuth Link</h2>
+        <p>Click this link to authenticate:</p>
+        <a href="/oauth2/authorization/google" target="_blank">
+            <button>Open Google OAuth</button>
+        </a>
+    </div>
+    
+    <div class="step">
+        <h2>Step 3: Check Authentication Status</h2>
+        <button onclick="checkAuth()">Check if Authenticated</button>
+        <div id="authResult"></div>
+    </div>
+    
+    <div class="step">
+        <h2>Step 4: Get Token</h2>
+        <button onclick="getToken()">Get Access Token</button>
+        <div id="tokenResult"></div>
+    </div>
+
+    <script>
+        async function testOAuth() {
+            try {
+                const response = await fetch('/oauth2/authorization/google', { redirect: 'manual' });
+                const location = response.headers.get('Location');
+                document.getElementById('oauthResult').innerHTML = 
+                    '<div class="success">OAuth URL generated: <br/><textarea rows="3" cols="100">' + location + '</textarea></div>';
+            } catch (error) {
+                document.getElementById('oauthResult').innerHTML = 
+                    '<div class="error">Error: ' + error.message + '</div>';
+            }
+        }
+        
+        async function checkAuth() {
+            try {
+                const response = await fetch('/simple-token');
+                const data = await response.json();
+                document.getElementById('authResult').innerHTML = 
+                    '<div class="success">Auth Status: <pre>' + JSON.stringify(data, null, 2) + '</pre></div>';
+            } catch (error) {
+                document.getElementById('authResult').innerHTML = 
+                    '<div class="error">Error: ' + error.message + '</div>';
+            }
+        }
+        
+        async function getToken() {
+            try {
+                const response = await fetch('/token');
+                const data = await response.json();
+                document.getElementById('tokenResult').innerHTML = 
+                    '<div class="success">Token Info: <pre>' + JSON.stringify(data, null, 2) + '</pre></div>';
+            } catch (error) {
+                document.getElementById('tokenResult').innerHTML = 
+                    '<div class="error">Error: ' + error.message + '</div>';
+            }
+        }
+    </script>
+</body>
+</html>
