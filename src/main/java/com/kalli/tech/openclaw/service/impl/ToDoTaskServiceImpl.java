@@ -1,6 +1,7 @@
 package com.kalli.tech.openclaw.service.impl;
 
 import com.kalli.tech.openclaw.persistance.entity.ToDoTask;
+import com.kalli.tech.openclaw.persistance.entity.TodoTaskId;
 import com.kalli.tech.openclaw.persistance.repository.ToDoTaskRepo;
 import com.kalli.tech.openclaw.service.ToDoTaskService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +20,11 @@ public class ToDoTaskServiceImpl implements ToDoTaskService {
     public ToDoTaskServiceImpl(ToDoTaskRepo toDoTaskRepo) {
         this.toDoTaskRepo = toDoTaskRepo;
     }
-    
+
     @Override
     public ToDoTask createTask(ToDoTask toDoTask) {
 
-        log.info("{}",toDoTask);
+        log.info("{}", toDoTask);
         // The ID should already be set by ModelMapper from TodoTaskRequest
         // If ID is null, we need to create it from the request data
         if (toDoTask.getId() == null) {
@@ -46,13 +47,13 @@ public class ToDoTaskServiceImpl implements ToDoTaskService {
                 ))
                 .values().stream()
                 .flatMap(list -> list.stream()
-                        .sorted(Comparator.comparing( ToDoTask::getDueDate,
+                        .sorted(Comparator.comparing(ToDoTask::getDueDate,
                                 Comparator.nullsFirst(Comparator.naturalOrder())))
                 ).toList();
     }
 
     @Override
-    public ToDoTask getTaskById(Long id) {
+    public ToDoTask getTaskById(TodoTaskId id) {
         return toDoTaskRepo.findById(id).orElse(null);
     }
 }

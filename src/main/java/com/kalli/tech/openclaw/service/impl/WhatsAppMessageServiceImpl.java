@@ -7,7 +7,6 @@ import com.kalli.tech.openclaw.service.WhatsAppMessageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,17 +15,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class WhatsAppMessageServiceImpl implements WhatsAppMessageService {
     @Override
-    public String prepareOpenCladCommand(String message, Category category,String groupId) {
-
-        if(message!=null || !message.isEmpty()){
-        String command = "openclaw message send --target " + groupId + " --message \"" + message + "\"";
-        log.info("openClaw command {}",command);
-        return command;
-        }
-        return "";
+    public List<String> prepareOpenClawSendArgs(String message, String groupId) {
+        if (message == null || message.isEmpty()) return List.of();
+        return List.of("openclaw", "message", "send", "--target", groupId, "--message", message);
     }
-
-
 
 
     @Override
@@ -50,7 +42,7 @@ public class WhatsAppMessageServiceImpl implements WhatsAppMessageService {
                         toDoTask.getId().getCategory(),
                         toDoTask.getId().getTaskName())).collect(Collectors.joining("\n"));
 
-        log.info("jus to print{}",whatsAppMessageBody.length());
+        log.info("jus to print{}", whatsAppMessageBody.length());
         return whatsAppMessageBody.isEmpty() ? "" : (header + whatsAppMessageBody);
     }
 

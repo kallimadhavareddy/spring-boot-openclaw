@@ -5,50 +5,48 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
 public class OpenClawWhatsAppServiceImpl implements OpenClawWhatsAppService {
 
-    /**
-     * Runs an OpenClaw command on Linux and returns the output.
-     *
-     * @param command Full command, e.g., "openclaw agent --to +1234567890 --message 'Hello'"
-     * @return Output of the command
-     */
     @Override
-    public String runCommand(String command) {
+    public String runCommand(List<String> command) {
         StringBuilder output = new StringBuilder();
-        Process process = null;
+
+        ProcessBuilder pb = new ProcessBuilder(command);
+        pb.redirectErrorStream(true);
 
         try {
-            // Use /bin/bash -c to run Linux shell commands
-            log.info("Executing command: " + command);
-            process = new ProcessBuilder("/bin/bash", "-c", command)
-                    .redirectErrorStream(true) // merge stdout and stderr
-                    .start();
+            log.info("Executing: {}", String.join(" ", command));
+            Process process = pb.start();
 
             try (BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(process.getInputStream()))) {
+                    new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     output.append(line).append("\n");
                 }
             }
 
-            int exitCode = process.waitFor();
-            output.append("Exit code: ").append(exitCode).append("\n");
+            boolean finished = process.waitFor(60, TimeUnit.SECONDS);
+            if (!finished) {
+                process.destroyForcibly();
+                return output.append("Error: timeout\n").toString();
+            }
 
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            output.append("Error: ").append(e.getMessage()).append("\n");
-        } finally {
-            if (process != null) process.destroy();
+            output.append("Exit code: ").append(process.exitValue()).append("\n");
+            return output.toString();
+
+        } catch (Exception e) {
+            log.error("Command failed", e);
+            return output.append("Error: ").append(e.getMessage()).append("\n").toString();
         }
-
-        return output.toString();
     }
+
 }
 

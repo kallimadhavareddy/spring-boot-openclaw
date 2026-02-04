@@ -58,7 +58,7 @@ public class OpenClawRestartServiceImpl implements OpenClawRestartService {
         log.info("Re login whats app Executed successfully");
     }
 
-    public void sleepForAMinute(){
+    public void sleepForAMinute() {
         try {
             // 1 minute = 60,000 milliseconds
             Thread.sleep(60_000);

@@ -16,7 +16,8 @@ public class TodoTaskId implements Serializable {
     @Enumerated(EnumType.STRING)
     private Category category;
 
-    public TodoTaskId() {}
+    public TodoTaskId() {
+    }
 
     public TodoTaskId(String taskName, Category category) {
         this.taskName = taskName;
@@ -24,10 +25,21 @@ public class TodoTaskId implements Serializable {
     }
 
     // getters & setters
-    public String getTaskName() { return taskName; }
-    public void setTaskName(String taskName) { this.taskName = taskName; }
-    public Category getCategory() { return category; }
-    public void setCategory(Category category) { this.category = category; }
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     // equals & hashCode are REQUIRED for composite keys
     @Override

@@ -1,10 +1,11 @@
 package com.kalli.tech.openclaw.model;
 
-import lombok.Data;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
 @Data
-    public class TodoTaskIdRequest {
+public class TodoTaskIdRequest {
     @NotBlank
     @NotNull
     private String taskName;
