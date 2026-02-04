@@ -50,9 +50,7 @@ public class OpenClawRestartServiceImpl implements OpenClawRestartService {
     }
 
     public void restartOpenclawGateway() throws IOException, InterruptedException {
-        executeCommand(
-                List.of("bash", "-c", "nohup openclaw gateway restart > openclaw.log 2>&1 &"),
-                false
+        executeCommand(List.of("openclaw", "gateway", "restart"),false
         );
         sleepForAMinute();
         log.info("Re login whats app Executed successfully");
@@ -68,6 +66,6 @@ public class OpenClawRestartServiceImpl implements OpenClawRestartService {
         }
 
     }
-
+//List.of("bash", "-c", "nohup openclaw gateway restart > openclaw.log 2>&1 &")
 }
 

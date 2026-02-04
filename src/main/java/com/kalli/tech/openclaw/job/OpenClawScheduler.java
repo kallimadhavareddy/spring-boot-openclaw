@@ -35,7 +35,7 @@ public class OpenClawScheduler {
     }
 
     @Scheduled(cron = "0 0 6-23/2 * * *")
-    public void sayHelloEveryTwoMinutes() throws IOException, InterruptedException {
+    public void toDoTaskScheduler() throws IOException, InterruptedException {
         //restart
         try {
             try {
