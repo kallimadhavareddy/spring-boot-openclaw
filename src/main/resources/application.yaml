@@ -1,0 +1,48 @@
+spring:
+  datasource:
+    url: jdbc:mysql://195.35.53.96:3306/u421384200_open_claw?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: u421384200_open_claw
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+      max-lifetime: 15000     # 15 seconds
+      idle-timeout: 10000     # 10 seconds
+      keepalive-time: 5000  # ping every 5 seconds
+      connection-timeout: 15000
+      validation-timeout: 2000
+      auto-commit: true
+      pool-name: OpenClawHikariPool
+      connection-test-query: SELECT 1
+      leak-detection-threshold: 30000
+
+      # slightly less than MySQL wait_timeout
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+        jdbc:
+          time_zone: UTC
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE
+    com.kalli.tech.openclaw: DEBUG
+    com.zaxxer.hikari: INFO
+
+
+
+
+
