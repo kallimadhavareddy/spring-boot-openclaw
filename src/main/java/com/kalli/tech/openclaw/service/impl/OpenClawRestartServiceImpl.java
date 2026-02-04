@@ -25,13 +25,13 @@ public class OpenClawRestartServiceImpl implements OpenClawRestartService {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+                log.info(line);
             }
         }
 
         if (waitForCompletion) {
             int exitCode = process.waitFor();
-            System.out.println("Command exited with code: " + exitCode);
+            log.info("Command exited with code: {} " , exitCode);
         }
     }
 
