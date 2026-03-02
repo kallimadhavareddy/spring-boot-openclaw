@@ -38,13 +38,18 @@ public class OpenClawScheduler {
     public void toDoTaskScheduler() throws IOException, InterruptedException {
         //restart
         try {
-            try {
-                openClawRestartService.restartOpenclawGateway();
-                //re login
-                openClawRestartService.restartOpenclawWhatsAppChannel();
-            } catch (Exception e) {
-                log.error("Error while restarting OpenClaw Gateway", e);
-            }
+            openClawRestartService.restartOpenclawGateway();
+            //re login
+            openClawRestartService.restartOpenclawWhatsAppChannel();
+        } catch (Exception e) {
+            log.error("Error while restarting OpenClaw Gateway", e);
+        }
+        //sendWhatsAppMessages();
+    }
+
+    private void sendWhatsAppMessages() {
+        try {
+
 
             List<ToDoTask> tasks = toDoTaskService.getTasks().stream()
                     .sorted(Comparator.comparing(
